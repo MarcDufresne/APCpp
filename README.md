@@ -58,3 +58,8 @@ Clone the Repo recursively!
 - Enter the folder
 - `cmake .. -DWIN32=1` (If on MinGW, also add `-DMINGW=1`. If `zlib` is not installed add `-DUSE_ZLIB=OFF`)
 - `cmake --build .`
+## macOS
+- Create a folder `build`
+- `cd build`
+- `cmake ..` (builds for the host architecture; for a specific arch or a universal build add e.g. `-DCMAKE_OSX_ARCHITECTURES=arm64`, `x86_64`, or `"arm64;x86_64"`)
+- `cmake --build .`
