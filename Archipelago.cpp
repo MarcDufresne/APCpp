@@ -580,7 +580,11 @@ void AP_SendItems(AP_State* state, std::set<int64_t> const& locations) {
 
         Json::Value fake_msg;
         fake_msg[0]["cmd"] = "ReceivedItems";
-        fake_msg[0]["index"] = state->last_item_idx+1;
+        // size_t (unsigned long on LP64 macOS) is ambiguous across jsoncpp's
+        // UInt/Int64/UInt64 converting constructors because uint64_t is
+        // unsigned long long here (distinct from size_t). On Linux x64 uint64_t
+        // == unsigned long, so it resolved by exact match there. Cast explicitly.
+        fake_msg[0]["index"] = static_cast<Json::UInt64>(state->last_item_idx + 1);
         fake_msg[0]["items"] = Json::arrayValue;
         for (int64_t location_id : new_locations) {
             int64_t recv_item_id = state->location_to_item[location_id];
